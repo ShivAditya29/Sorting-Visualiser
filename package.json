@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "webpack -d --watch",
     "build": "webpack -p",
-    "start": "nodemon server/index.js",
-    "vercel-build": "webpack -p"
+    "start": "nodemon server/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -26,7 +25,6 @@
     "redux": "^3.6.0",
     "redux-actions": "^1.2.0",
     "style-loader": "^0.13.1",
-    "webpack": "^1.14.0",
-    "html-webpack-plugin": "^2.30.1"
+    "webpack": "^1.14.0"
   }
 }

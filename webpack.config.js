@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var BUILD_DIR = path.resolve(__dirname, 'client/public');
 var APP_DIR = path.resolve(__dirname, 'client/app');
@@ -24,6 +25,14 @@ var config = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'index.html'),
+      filename: 'index.html',
+      inject: true,
+      favicon: path.resolve(__dirname, 'client/styling/icon.ico'),
+    }),
+  ],
 };
 
 module.exports = config;

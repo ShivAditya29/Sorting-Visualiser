@@ -18,47 +18,72 @@ class Body extends Component {
       currentMergeX,
     } = this.props;
 
-    const numWidth = Math.floor($(document).width() / (array.length * 3));
-    const width = `${numWidth}px`;
-    const numMargin = array.length < 5 ?
-      10 : array.length < 8 ?
-        8 : array.length < 11 ?
-          6 : array.length < 20 ?
-            4 : array.length < 50 ?
-              3.5 : array.length < 100 ?
-                3 : array.length < 130 ?
-                  2.5 : 2;
-    const margin = `${numMargin}px`;
-    const color = numWidth > 20 ? "white" : "transparent";
-    const numFont = numWidth > 70 ?
-      20 : numWidth > 60 ?
-        18 : numWidth > 50 ?
-          16 : numWidth > 40 ?
-            14 : numWidth > 30 ?
-              12 : numWidth > 20 ?
-                10 : 8;
-    const fontSize = `${numFont}px`
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const radius = Math.min(centerX, centerY) * 0.6;
+    const angleStep = (2 * Math.PI) / array.length;
 
     return (
       <div id="bodyContainer">
-        { array.length ? array.map((number, index) => {
-          const backgroundColor = currentSwappers.includes(index) ?
-              "rgba(219, 57, 57, 0.8)" : currentBubbleTwo.includes(index) ||
-              currentQuickTwo.includes(index) || currentHeapThree.includes(index) ||
-              currentMergeX.includes(index) ?
-                "rgba(78, 216, 96, 0.8)" : pivot === index ?
-                  "rgba(237, 234, 59, 0.8)" : currentSorted.includes(index) ?
-                    "rgba(169, 92, 232, 0.8)" : "rgba(66, 134, 244, 0.8)";
-          return <div
-            className="arrayElement"
-            key={index}
-            style={{height: `${number * 3}px`, width: width, marginLeft: margin, marginRigh: margin, backgroundColor: backgroundColor, color: color, fontSize: fontSize}}>
-            {number}
+        <div className="holographic-display">
+          <div className="center-core">
+            <div className="core-glow"></div>
           </div>
-        }) : null
-        }
+          {array.length ? array.map((number, index) => {
+            const angle = index * angleStep;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            const z = number * 2;
+            
+            const backgroundColor = currentSwappers.includes(index) ?
+                "rgba(255, 20, 147, 0.9)" : currentBubbleTwo.includes(index) ||
+                currentQuickTwo.includes(index) || currentHeapThree.includes(index) ||
+                currentMergeX.includes(index) ?
+                  "rgba(0, 191, 255, 0.9)" : pivot === index ?
+                    "rgba(255, 215, 0, 0.9)" : currentSorted.includes(index) ?
+                      "rgba(50, 205, 50, 0.9)" : "rgba(138, 43, 226, 0.8)";
+
+            const isActive = currentSwappers.includes(index) || 
+                           currentBubbleTwo.includes(index) || 
+                           currentQuickTwo.includes(index) || 
+                           currentHeapThree.includes(index) || 
+                           currentMergeX.includes(index) || 
+                           pivot === index;
+
+            return (
+              <div
+                key={index}
+                className={`holographic-element ${isActive ? 'active' : ''} ${currentSorted.includes(index) ? 'sorted' : ''}`}
+                style={{
+                  left: `${x}px`,
+                  top: `${y}px`,
+                  transform: `translate(-50%, -50%) translateZ(${z}px)`,
+                  backgroundColor: backgroundColor,
+                  width: `${Math.max(20, number * 2)}px`,
+                  height: `${Math.max(20, number * 2)}px`,
+                  fontSize: `${Math.max(8, number / 2)}px`,
+                  zIndex: z
+                }}
+              >
+                <div className="element-glow"></div>
+                <div className="element-content">{number}</div>
+                <div className="connection-line"></div>
+              </div>
+            );
+          }) : null}
+        </div>
+        <div className="particle-system">
+          {[...Array(50)].map((_, i) => (
+            <div key={i} className="particle" style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 2}s`
+            }}></div>
+          ))}
+        </div>
       </div>
-    )
+    );
   }
 }
 

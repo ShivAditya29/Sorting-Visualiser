@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "webpack -d --watch",
     "build": "webpack -p",
-    "start": "nodemon server/index.js"
+    "start": "nodemon server/index.js",
+    "vercel-build": "webpack -p"
   },
   "author": "",
   "license": "ISC",
